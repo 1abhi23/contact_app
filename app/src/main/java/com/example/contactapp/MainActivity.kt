@@ -631,9 +631,7 @@ fun EditContactScreen(
                     unfocusedTextColor = Color.Black
                 )
             )
-
             Spacer(Modifier.height(16.dp))
-
             Button(
                 onClick = {
                     val updateContact = contact.copy(
