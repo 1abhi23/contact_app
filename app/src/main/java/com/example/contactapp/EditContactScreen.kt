@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.contactapp.model.Contacts
 import com.example.contactapp.ui.theme.GreenJC
 
 @OptIn(ExperimentalMaterial3Api::class)

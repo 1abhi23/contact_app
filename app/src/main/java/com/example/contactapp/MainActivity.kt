@@ -49,8 +49,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
 import coil.compose.rememberAsyncImagePainter
+import com.example.contactapp.model.ContactDatabase.Companion.getDatabase
+import com.example.contactapp.model.ContactRepository
+import com.example.contactapp.model.Contacts
 import com.example.contactapp.ui.theme.ContactAppTheme
 import com.example.contactapp.ui.theme.GreenJC
 
@@ -58,11 +60,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val database = Room.databaseBuilder(
-            applicationContext,
-            ContactDatabase::class.java,
-            "contact_database"
-        ).build()
+        val database = getDatabase(this)
         val repository = ContactRepository(database.contactDao())
 
         val viewModel: ContactViewModel by viewModels { ContactViewModelFactory(repository) }
