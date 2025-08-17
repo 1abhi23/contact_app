@@ -34,8 +34,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -75,13 +75,13 @@ class MainActivity : ComponentActivity() {
                     composable("contactDetail/{contactId}") { navBackStackEntry ->
                         val contactId = navBackStackEntry.arguments?.getString("contactId")?.toInt()
                         val contact =
-                            viewModel.allContacts.observeAsState(initial = emptyList()).value.find { it.id == contactId }
+                            viewModel.contacts.collectAsState().value.find { it.id == contactId }
                         contact?.let { ContactDetailScreen(it, viewModel, navController) }
                     }
                     composable("editContact/{contactId}") { navBackStackEntry ->
                         val contactId = navBackStackEntry.arguments?.getString("contactId")?.toInt()
                         val contact =
-                            viewModel.allContacts.observeAsState(initial = emptyList()).value.find { it.id == contactId }
+                            viewModel.contacts.collectAsState().value.find { it.id == contactId }
                         contact?.let { EditContactScreen(it, viewModel, navController) }
                     }
                 }
@@ -133,7 +133,7 @@ fun ContactListScreen(
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add Contact")
         }
     }) { paddingValues ->
-        val contacts by viewModel.allContacts.observeAsState(initial = emptyList())
+        val contacts by viewModel.contacts.collectAsState()
         LazyColumn(modifier = Modifier.padding(paddingValues)) {
             items(contacts) { contact ->
                 ContactItem(contacts = contact) {

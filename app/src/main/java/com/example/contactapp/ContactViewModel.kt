@@ -1,17 +1,26 @@
 package com.example.contactapp
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.contactapp.model.ContactRepository
 import com.example.contactapp.model.Contacts
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ContactViewModel(private val repository: ContactRepository): ViewModel() {
+    private val _contacts = MutableStateFlow<List<Contacts>>(emptyList())
+    val contacts: StateFlow<List<Contacts>> = _contacts.asStateFlow()
 
-    val allContacts: LiveData<List<Contacts>> = repository.allContacts.asLiveData()
+    init {
+        viewModelScope.launch {
+            repository.allContacts.collect { list ->
+                _contacts.value = list
+            }
+        }
+    }
 
     fun addContact(image: String, name: String, phoneNumber: String, email: String) {
         viewModelScope.launch {
