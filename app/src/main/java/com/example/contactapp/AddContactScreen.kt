@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,6 +39,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -61,7 +63,9 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
     var email by remember {
         mutableStateOf("")
     }
-
+    var isValid by remember {
+        mutableStateOf(true)
+    }
     val launcher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
             imageUri = uri
@@ -134,8 +138,14 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
             Spacer(Modifier.height(8.dp))
 
             TextField(
-                value = phoneNumber, onValueChange = { phoneNumber = it },
+                value = phoneNumber,  onValueChange = { input ->
+                    phoneNumber = input
+                    // Validation: only digits and exactly 10 digits
+                    isValid = phoneNumber.length == 10 && phoneNumber.all { it.isDigit() }
+                },
                 label = { Text("Phone Number") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                isError = !isValid,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp)),
@@ -167,14 +177,21 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
 
             Button(
                 onClick = {
-                    imageUri?.let {
-                        val internalPath = copyUriToInternalStorage(context, it, "$name.jpg")
-                        internalPath?.let { path ->
-                            viewModel.addContact(path, name, phoneNumber, email)
-                            navController.navigate("contactList") {
-                                popUpTo(0)
+                    if (name.isBlank() || phoneNumber.isBlank()) {
+                        Toast.makeText(context, "Name and Phone number are required", Toast.LENGTH_SHORT).show()
+                    } else if (phoneNumber.length != 10 || !phoneNumber.all { it.isDigit() }) {
+                        Toast.makeText(context, "Phone number must be 10 digits", Toast.LENGTH_SHORT).show()
+                    } else {
+                        imageUri?.let {
+                            val internalPath = copyUriToInternalStorage(context, it, "$name.jpg")
+                            internalPath?.let { path ->
+                                viewModel.addContact(path, name, phoneNumber, email)
+                                navController.navigate("contactList") {
+                                    popUpTo(0)
+                                }
                             }
-
+                        } ?: run{
+                            Toast.makeText(context, "Add a Photo to save contact", Toast.LENGTH_SHORT).show()
                         }
                     }
                 },
