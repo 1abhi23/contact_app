@@ -53,8 +53,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.contactapp.model.ContactDatabase.Companion.getDatabase
 import com.example.contactapp.model.ContactRepository
 import com.example.contactapp.model.Contacts
+import com.example.contactapp.ui.theme.BlueJC
 import com.example.contactapp.ui.theme.ContactAppTheme
-import com.example.contactapp.ui.theme.GreenJC
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,13 +121,13 @@ fun ContactListScreen(
                     )
                 }
             }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = GreenJC,
+                containerColor = BlueJC,
                 titleContentColor = Color.White,
                 navigationIconContentColor = Color.White
             )
         )
     }, floatingActionButton = {
-        FloatingActionButton(containerColor = GreenJC, onClick = {
+        FloatingActionButton(containerColor = BlueJC, onClick = {
             navController.navigate("addContact")
         }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = "Add Contact")

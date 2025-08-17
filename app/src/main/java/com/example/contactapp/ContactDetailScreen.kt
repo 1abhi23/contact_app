@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.contactapp.model.Contacts
-import com.example.contactapp.ui.theme.GreenJC
+import com.example.contactapp.ui.theme.BlueJC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,13 +82,13 @@ fun ContactDetailScreen(
                     )
                 }
             }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = GreenJC,
+                containerColor = BlueJC,
                 titleContentColor = Color.White,
                 navigationIconContentColor = Color.White
             )
         )
     }, floatingActionButton = {
-        FloatingActionButton(containerColor = GreenJC, onClick = {
+        FloatingActionButton(containerColor = BlueJC, onClick = {
             navController.navigate("editContact/${contact.id}")
         }) {
             Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Details")
@@ -190,7 +190,7 @@ fun ContactDetailScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Button(colors = ButtonDefaults.buttonColors(GreenJC),
+                    Button(colors = ButtonDefaults.buttonColors(BlueJC),
                         onClick = {
                             viewModel.deleteContact(contact)
                             navController.navigate("contactList") {

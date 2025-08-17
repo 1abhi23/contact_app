@@ -42,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.contactapp.ui.theme.GreenJC
+import com.example.contactapp.ui.theme.BlueJC
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +83,7 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
                     )
                 }
             }, colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = GreenJC,
+                containerColor = BlueJC,
                 titleContentColor = Color.White,
                 navigationIconContentColor = Color.White
             )
@@ -111,7 +111,7 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
 
             Button(
                 onClick = { launcher.launch("image/*") },
-                colors = ButtonDefaults.buttonColors(GreenJC)
+                colors = ButtonDefaults.buttonColors(BlueJC)
             ) {
                 Text(text = "Choose Image")
             }
@@ -178,7 +178,7 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
                         }
                     }
                 },
-                colors = ButtonDefaults.buttonColors(GreenJC)
+                colors = ButtonDefaults.buttonColors(BlueJC)
             ) {
                 Text(text = "Add Contact")
             }
