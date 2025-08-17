@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.contactapp.model.ContactRepository
+import com.example.contactapp.model.Contacts
 import kotlinx.coroutines.launch
 
 class ContactViewModel(private val repository: ContactRepository): ViewModel() {
