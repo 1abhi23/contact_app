@@ -155,7 +155,7 @@ fun ContactDetailScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_message_24), // your image resource
-                                contentDescription = "Call",
+                                contentDescription = "Message Button",
                                 modifier = Modifier.padding(end = 6.dp).clickable {
                                     if (contact.phoneNumber.length == 10 && contact.phoneNumber.all { it.isDigit() }) {
                                         val smsUri = Uri.parse("smsto:${contact.phoneNumber}") // replace with your contact's number
@@ -189,7 +189,7 @@ fun ContactDetailScreen(
                             Spacer(modifier = Modifier.weight(1f))
                             Icon(
                                 painter = painterResource(id = R.drawable.baseline_call_24), // your image resource
-                                contentDescription = "Call",
+                                contentDescription = "Call Button",
                                 modifier = Modifier.padding(end = 6.dp).clickable {
                                     if (contact.phoneNumber.length == 10 && contact.phoneNumber.all { it.isDigit() }) {
                                         val intent = Intent(Intent.ACTION_DIAL).apply {
