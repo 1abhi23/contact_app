@@ -1,7 +1,10 @@
 package com.example.contactapp
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -56,7 +60,7 @@ fun ContactDetailScreen(
     viewModel: ContactViewModel,
     navController: NavController
 ) {
-    val context = LocalContext.current.applicationContext
+    val context = LocalContext.current
 
     Scaffold(topBar = {
         TopAppBar(
@@ -148,6 +152,20 @@ fun ContactDetailScreen(
                             Text("Name: ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(contact.name, fontSize = 16.sp)
+                            Spacer(modifier = Modifier.weight(1f))
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_message_24), // your image resource
+                                contentDescription = "Call",
+                                modifier = Modifier.padding(end = 6.dp).clickable {
+                                    if (contact.phoneNumber.length == 10 && contact.phoneNumber.all { it.isDigit() }) {
+                                        val smsUri = Uri.parse("smsto:${contact.phoneNumber}") // replace with your contact's number
+                                        val intent = Intent(Intent.ACTION_SENDTO, smsUri)
+                                        context.startActivity(intent)
+                                    } else {
+                                        Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
                         }
                     }
 
@@ -168,6 +186,21 @@ fun ContactDetailScreen(
                             Text("Phone: ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(contact.phoneNumber, fontSize = 16.sp)
+                            Spacer(modifier = Modifier.weight(1f))
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_call_24), // your image resource
+                                contentDescription = "Call",
+                                modifier = Modifier.padding(end = 6.dp).clickable {
+                                    if (contact.phoneNumber.length == 10 && contact.phoneNumber.all { it.isDigit() }) {
+                                        val intent = Intent(Intent.ACTION_DIAL).apply {
+                                            data = Uri.parse("tel:${contact.phoneNumber}")
+                                        }
+                                        context.startActivity(intent)
+                                    } else {
+                                        Toast.makeText(context, "Invalid phone number", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
                         }
                     }
 
