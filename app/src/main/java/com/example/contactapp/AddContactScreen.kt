@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -40,7 +41,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -123,10 +126,16 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
                 Text(text = "Choose Image")
             }
             Spacer(modifier = Modifier.height(16.dp))
-
+            val focusManager = LocalFocusManager.current
             TextField(
                 value = name, onValueChange = { name = it },
                 label = { Text("Name") },
+                singleLine = true,
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus() // hide cursor & keyboard
+                    }
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp)),
@@ -147,7 +156,12 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
                     isValid = phoneNumber.length == 10 && phoneNumber.all { it.isDigit() }
                 },
                 label = { Text("Phone Number") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,  imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus() // hide cursor & keyboard
+                    }
+                ),
                 isError = !isValid,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -165,6 +179,12 @@ fun AddContactScreen(viewModel: ContactViewModel, navController: NavController) 
             TextField(
                 value = email, onValueChange = { email = it },
                 label = { Text("Email") },
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus() // hide cursor & keyboard
+                    }
+                ),
+                singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(8.dp)),
